@@ -1,15 +1,14 @@
 import { Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
-import { type VariantProps } from "class-variance-authority"
 
 type Props = {
-  variant?: VariantProps
+  variantProp?: IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>
 }
 
 
-const LoadingButton = ({variant}: Props) => {
+const LoadingButton = ({variantProp}: Props) => {
   return (
-    <Button disabled variant={variant}>
+    <Button disabled variant={variantProp}>
         <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
         Please wait...
     </Button>
