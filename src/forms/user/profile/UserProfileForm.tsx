@@ -101,7 +101,7 @@ const UserProfileForm = ({isLoading, onSave, currentUser}: Props) => {
                 )}/>
             </div>
             { isLoading ? (
-                <LoadingButton variant="secondary"/>
+                <LoadingButton/>
             ) : (
                 <Button type="submit" variant="secondary">Save Changes</Button>
             )}
