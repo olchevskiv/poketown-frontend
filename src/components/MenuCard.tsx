@@ -1,16 +1,28 @@
+import { MenuItem } from "@/types";
+import { useNavigate } from "react-router-dom";
+
 type Props = {
-    title: string;
-    description: string;
-    image: string;
+    menuItem: MenuItem;
+    showPriceCalories?: boolean;
 }
 
-const MenuCard = ({title, description, image}: Props) => {
+const MenuCard = ({menuItem,showPriceCalories=true}: Props) => {
+    const navigate = useNavigate(); 
+    const menuItemRoute = () =>{ 
+        navigate(`/menu/${menuItem._id}`,{ replace: true });
+    }
+
     return (
-        <div className="h-[550px] flex flex-col justify-center items-center rounded-xl hover:border hover:border-primary-foreground bg-muted hover:bg-background px-10" >
-            <img className="pb-5 pt-5 w-8/12 md:w-11/12" src={image}></img>
-            <div className="">
-                <div className="text-2xl mb-2 uppercase tracking-wide">{title}</div>
-                <div className="text-md">{description}</div>
+        <div  onClick={menuItemRoute} className="py-10 h-[520px] flex flex-col justify-start items-center rounded-xl hover:border hover:border-primary-foreground bg-muted hover:bg-background px-10" >
+            <img className="pb-5 pt-5 md:w-11/12 w-3/5 max-h-[340px]" src={menuItem.image_url}></img>
+            <div >
+                <div className="text-2xl mb-2 uppercase tracking-wide">{menuItem.name}</div>
+                <div className="text-md">{menuItem.description}</div>
+                {showPriceCalories ? (
+                    <div className="text-md py-3">${menuItem.price} - 0 CAL</div>
+                ) : (
+                    <div></div>
+                )}
             </div>
         </div>
     );

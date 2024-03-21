@@ -8,12 +8,14 @@ type Props = {
 
 const Layout = ({children}: Props) => {
   return (
-    <div className="flex flex-col min-h-screen">
-        <Header />
-        <div className="mx-auto my-0 ">
-            <div className = "container py-10">{children}</div>
-        </div>
-        <Footer />
+    <div>
+      <div className="flex flex-col min-h-screen">
+          <Header />
+          <div className="my-0 ">
+              <div className = "container py-10">{children}</div>
+          </div>
+      </div>
+      <Footer />
     </div>
   )
 };

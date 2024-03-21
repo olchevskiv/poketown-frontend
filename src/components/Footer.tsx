@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <div className="bg-primary py-10">
+        <div className="bg-primary py-10 mt-auto">
             <div className="container mx-auto flex  flex-col md:flex-row justify-evenly py-10">
                 <div className="flex flex-col md:flex-row md:gap-x-[150px] text-white w-3/4">
                     <div className="md:mb-0 mb-5">
@@ -36,8 +36,8 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="text-white text-2xl">
-                    ©2023
-                    <span className="">poketown</span>
+                    <span className="me-2">©2023</span>
+                    <span className="tracking-wide font-bold">{import.meta.env.VITE_APP_NAME}</span>
                 </div>
             </div>
         </div>

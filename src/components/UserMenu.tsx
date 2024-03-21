@@ -8,14 +8,15 @@ import { Link } from "react-router-dom";
 const UserMenu = () => {
     const { user, logout } = useAuth0();
     return (
-        <DropdownMenu>
+        <DropdownMenu >
             <DropdownMenuTrigger className="flex items-center px-3 hover:text-primary">
                 <CircleUserRound className="hover:text-primary mr-2" />
                 {user?.name}
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem><Link to="/profile" className="">My Profile</Link></DropdownMenuItem>
-                <Separator />
+                <DropdownMenuItem><Link to="/profile" className="hover:text-primary">Profile</Link></DropdownMenuItem>
+                <DropdownMenuItem><Link to="/orders" className="hover:text-primary">My Orders</Link></DropdownMenuItem>
+                <Separator className="bg-muted"/>
                 <DropdownMenuItem><Button variant="default" className="flex flex-1" onClick={()=> logout()}>Logout</Button></DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
