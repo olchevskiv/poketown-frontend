@@ -2,7 +2,7 @@ import { useGetMenuItem } from "@/api/MenuItemsAPI";
 import IngredientCard from "@/components/IngredientCard";
 import IngredientMenu from "@/components/IngredientMenu";
 import { Button } from "@/components/ui/button";
-import { Ingredient, MenuItem } from "@/types";
+import { Ingredient } from "@/types";
 import { Separator } from "@radix-ui/react-separator";
 import { Loader2, Pencil } from "lucide-react";
 import { useParams } from "react-router-dom";

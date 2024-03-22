@@ -3,12 +3,11 @@ import IngredientActionButton from "./IngredientActionButton";
 
 type Props = {
     ingredient: Ingredient;
-    inOrder?: boolean;
     customizable?: boolean;
     count?: number;
 }
 
-const IngredientCard = ({ingredient, customizable=false, inOrder=false, count=0}: Props) => {
+const IngredientCard = ({ingredient, customizable=false, count=0}: Props) => {
     return (
         <div className="flex flex-col cursor-pointer py-5 rounded-xl hover:border hover:border-primary-foreground bg-muted hover:bg-background" aria-label={ingredient.name}>
             <div className="flex flex-col justify-center items-center  h-[140px] w-[130px] ">   

@@ -63,7 +63,7 @@ const IngredientMenu = ({prefilledIngredients=[]}: Props) => {
                 <div >
                     <div id={category.id} className="flex flex-row justify-start gap-4 flex-wrap max-h-[650px]  mb-6">
                         {category.ingredients.map((ing: Ingredient) => (
-                            <IngredientCard key={ing._id} ingredient={ing} inOrder={false} customizable={true} count={ prefilledIngredients.find(i => i.name === ing.name) ? 1 : 0} />
+                            <IngredientCard key={ing._id} ingredient={ing} customizable={true} count={ prefilledIngredients.find(i => i.name === ing.name) ? 1 : 0} />
                         ))}
                     </div>
                 </div>

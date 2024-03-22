@@ -3,7 +3,7 @@ import IngredientCard from "@/components/IngredientCard";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Ingredient } from "@/types";
-import { Loader2, Pencil } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const MenuItemDetailPage = () => {
