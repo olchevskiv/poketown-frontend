@@ -17,12 +17,18 @@ const MenuItemDetailPage = () => {
     let ingredients: Ingredient[] = [];
 
     const hasIngredients = menuItem.category == 'BOWL';
+    let calories = 0;
 
     if (hasIngredients){
         ingredients = menuItem.ingredients;
         if (!ingredients || ingredients.length <= 0) {
             return <Loader2 className="mr-2 h-6 w-6 animate-spin h-[800px]"/>;
         }
+
+        // Calculate calorie value of the bowl from its ingredients property
+        calories= ingredients.reduce(function(prev, current) {
+            return prev + +current.calories
+        }, 0);
     }
 
     return( 
@@ -33,7 +39,7 @@ const MenuItemDetailPage = () => {
                         <h3 className="text-2xl tracking-wide">{menuItem.name}</h3>
                     </div>
                     <div className="text-lg">
-                        ${menuItem.price}
+                        ${menuItem.price} - {calories} CAL
                     </div>
                 </div>
                

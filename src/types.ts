@@ -16,6 +16,7 @@ export type Ingredient = {
     price: number,
     calories: number,
     image_url: string,
+    quantity: number
 };
 
 export type MenuItem = {

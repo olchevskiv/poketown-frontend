@@ -1,13 +1,14 @@
 import { Ingredient } from "@/types";
-import IngredientActionButton from "./IngredientActionButton";
+import { Button } from "./ui/button";
+import { Minus, Plus } from "lucide-react";
 
 type Props = {
     ingredient: Ingredient;
-    customizable?: boolean;
-    count?: number;
+    addToCustomOrder?: () => void;
+    removeFromCustomOrder?: () => void;
 }
 
-const IngredientCard = ({ingredient, customizable=false, count=0}: Props) => {
+const IngredientCard = ({ingredient, addToCustomOrder=()=>{}, removeFromCustomOrder}: Props) => {
     return (
         <div className="flex flex-col cursor-pointer py-5 rounded-xl hover:border hover:border-primary-foreground bg-muted hover:bg-background" aria-label={ingredient.name}>
             <div className="flex flex-col justify-center items-center  h-[140px] w-[130px] ">   
@@ -17,14 +18,25 @@ const IngredientCard = ({ingredient, customizable=false, count=0}: Props) => {
                     <span className="text-sm">{ingredient.calories} CAL</span>
                 </div>
             </div>
-                {customizable && count > 0 ? (
-                     <div className="flex flex-row justify-center items-center gap-7 -mt-4 pt-3">
-                        <IngredientActionButton action="remove" />
-                        <IngredientActionButton count={count} action="counter"/>
-                    </div>
+               
+            <div className="flex flex-row justify-center items-center -mt-4 pt-3">
+                {ingredient.quantity > 0 ? (
+                    <div className="flex flex-row justify-center items-center gap-7">
+                        <Button onClick={removeFromCustomOrder} variant="secondary" size="sm"  className="px-1 rounded-full hover:border-primary-foreground">
+                            <Minus className="text-primary-foreground hover:text-primary-foreground" />
+                        </Button>
+                        <Button onClick={addToCustomOrder} variant="default" size="sm" className="hover:no-underline rounded-full text-white text-md font-bold">
+                        {ingredient.quantity}
+                    </Button>
+                   </div>
                 ) : (
-                    <></>
+                    <Button onClick={addToCustomOrder} variant="default" size="sm" className="px-1 rounded-full text-white hover:border-primary-foreground text-md font-bold">
+                        <Plus className="text-white hover:text-primary-foreground" />
+                    </Button>
                 )}
+            
+        </div>
+               
         </div>
     );
 };
