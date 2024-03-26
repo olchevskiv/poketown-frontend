@@ -6,7 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
-import MenuCard from "./MenuCard";
+import MenuCard from "./MenuItemCard";
 import { useGetMenuItems } from "@/api/MenuItemsAPI";
 import { MenuItem } from "@/types";
 

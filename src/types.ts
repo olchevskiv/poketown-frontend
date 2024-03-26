@@ -8,6 +8,20 @@ export type User = {
     country: string
 };
 
+export type Restaurant = {
+    _id: string,
+    address: string,
+    city: string,
+    state: string,
+    zipCode: string,
+    country: string,
+    image_url: string,
+    daysOpen: string[],
+    hourOpenStart: number,
+    hourOpenEnd: number
+};
+
+
 export type Ingredient = {
     _id: string,
     name: string,
@@ -28,3 +42,45 @@ export type MenuItem = {
     image_url: string,
     ingredients: Ingredient[]
 };
+
+export type CartItem = {
+    _id: string,
+    name: string,
+    price: number,
+    quantity: number,
+    calories: number,
+    image_url: string,
+    ingredients: Ingredient[]
+};
+
+export type OrderStatus =
+  | "placed"
+  | "paid"
+  | "inProgress"
+  | "readyForPickup";
+
+export type Order = {
+    _id: string;
+    restaurant: Restaurant;
+    cartItems: CartItem[];
+    user: User;
+    totalAmount: number;
+    status: OrderStatus;
+    createdAt: string;
+    restaurantId: string;
+}
+
+export type SearchState = {
+    searchQuery: string;
+    page: number;
+    sortOption: string;
+};
+
+export type RestaurantSearchResponse = {
+    data: Restaurant[];
+    pagination: {
+      total: number;
+      page: number;
+      pages: number;
+    };
+  };

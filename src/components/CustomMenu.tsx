@@ -3,8 +3,11 @@ import IngredientCard from "./IngredientCard";
 import IngredientMenu from "./IngredientMenu";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
-import { Ingredient } from "@/types";
+import { CartItem, Ingredient } from "@/types";
 import { useState } from "react";
+import { toast } from "sonner";
+import { useOrderDetailsSheetContext } from "@/contexts/OrderDetailsSheetContext";
+import { useCartItemsContext } from "@/contexts/CartItemsContext";
 
 type Props = {
     title: string;
@@ -21,7 +24,6 @@ const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
         TOPPING: 0,
         SAUCE: 0
     });
-
     const INGREDIENT_MAXES = {
         BASE: 2,
         MIXIN: 5,
@@ -29,6 +31,10 @@ const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
         TOPPING: 5,
         SAUCE: 3
     };
+
+    const {setOpen} = useOrderDetailsSheetContext();
+    const {setCartItems} = useCartItemsContext();
+
     const [customOrderIngredients, setCustomOrderIngredients] = useState<Ingredient[]>(() => {
         let currentIngredients: Ingredient[] = [];
         if (prefilledIngredients && prefilledIngredients.length > 0) {
@@ -197,43 +203,79 @@ const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
     });
     };
 
-    return (
-    <div className="flex flex-row w-full">
-        <div className="w-2/5 flex flex-col mr-10 justify-start pb-10">
-            <div className="mb-6">
-                <div className="flex flex-row justify-between items-center justify-center">
-                    <h3 className="text-2xl tracking-wide">{title}</h3>
-                    <div className="hover:text-primary"><Pencil /></div>
-                </div>
-                <div className="text-lg flex flex-row gap-2">
-                    <span>${price}</span>
-                    - 
-                    <div><span>{calories}</span> CAL</div>
-                </div>
-            </div>
+    const addToCart = () => {
+        setCartItems((prevCartItems) => {
+            let updatedCartItems : CartItem[];
 
-            <Separator className="bg-muted mb-3"/>
+            if (customOrderIngredients.length == 0) {
+                updatedCartItems = prevCartItems;
+                toast.error(`You must add some ingredients. Try the salmon!`, {position: 'top-right',});
+                return updatedCartItems;
+            }
+
+            updatedCartItems = [
+                ...prevCartItems,
+                {
+                    _id: (Math.random() + 1).toString(36),
+                    name: 'Custom Bowl',
+                    price: price,
+                    quantity: 1,
+                    image_url: '',
+                    calories: calories,
+                    ingredients: customOrderIngredients 
+                },
+            ];
+        
+            sessionStorage.setItem(
+                `cartItems`,
+                JSON.stringify(updatedCartItems)
+            );
             
-            {customOrderIngredients.length > 0 ? (
-                <div id="ingredients" className="flex flex-row justify-start gap-4 flex-wrap max-h-[750px] overflow-y-scroll mb-6">
-                    {customOrderIngredients.map((ing: Ingredient) => (
-                        <IngredientCard key={ing._id} ingredient={ing} addToCustomOrder={() => addToCustomOrder(ing)} removeFromCustomOrder={() => removeFromCustomOrder(ing)}/>
-                    ))}
-                </div>
-            ) : (
-                <div className="text-lg tracking-wide pb-5">Add some ingredients to get started!</div>
-            )}
+            setOpen(true);
+            
+            return updatedCartItems;
+        });
+    };
 
-            <Separator className="bg-muted mb-3"/>
-            <div className="flex flex-row space-x-4">
-                <Button variant="default" size="lg">Add To Order</Button>
+    return (
+        <div>
+            <div className="flex flex-col md:flex-row w-full">
+                <div className="md:w-2/5 flex flex-col mr-10 justify-start pb-10">
+                    <div className="mb-6">
+                        <div className="flex flex-row justify-between items-center justify-center">
+                            <h3 className="text-2xl tracking-wide">{title}</h3>
+                            <div className="hover:text-primary"><Pencil /></div>
+                        </div>
+                        <div className="text-lg flex flex-row gap-2">
+                            <span>${price}</span>
+                            - 
+                            <div><span>{calories}</span> CAL</div>
+                        </div>
+                    </div>
+
+                    <Separator className="bg-muted mb-3"/>
+                    
+                    {customOrderIngredients.length > 0 ? (
+                        <div id="ingredients" className="flex flex-row justify-start gap-4 flex-wrap max-h-[750px] overflow-y-scroll mb-6">
+                            {customOrderIngredients.map((ing: Ingredient) => (
+                                <IngredientCard key={ing._id} ingredient={ing} addToCustomOrder={() => addToCustomOrder(ing)} removeFromCustomOrder={() => removeFromCustomOrder(ing)}/>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-lg tracking-wide pb-5">Add some ingredients to get started!</div>
+                    )}
+
+                    <Separator className="bg-muted mb-3"/>
+                    <div className="flex flex-row space-x-4">
+                        <Button onClick={addToCart} variant="default" size="lg">Add To Order</Button>
+                    </div>
+                </div>
+
+                <div className="md:w-3/5 flex  items-start">
+                    <IngredientMenu inCustomOrderIngredients={customOrderIngredients} addToCustomOrder={addToCustomOrder} removeFromCustomOrder={removeFromCustomOrder} />
+                </div>
             </div>
         </div>
-
-        <div className="w-3/5 flex  items-start">
-            <IngredientMenu inCustomOrderIngredients={customOrderIngredients} addToCustomOrder={addToCustomOrder} removeFromCustomOrder={removeFromCustomOrder} />
-        </div>
-    </div>
     );
 }
 

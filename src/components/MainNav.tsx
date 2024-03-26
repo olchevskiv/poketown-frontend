@@ -1,19 +1,19 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const MainNav = () => {
     return (
         <div className="flex flex-row space-x-5">
-            <Link to="/menu" className="text-lg tracking-wider uppercase text-primary-foreground hover:underline hover:underline-offset-2 hover:text-primary">
+            <NavLink to="/menu"  className="text-lg tracking-wider active:underline uppercase text-primary-foreground hover:underline hover:underline-offset-2 hover:text-primary">
                 Menu
-            </Link>
+            </NavLink>
 
-            <Link to="/about-us" className="text-lg tracking-wider uppercase text-primary-foreground hover:underline hover:underline-offset-2 hover:text-primary">
+            <NavLink to="/about-us" className="text-lg tracking-wider uppercase text-primary-foreground hover:underline hover:underline-offset-2 hover:text-primary">
                 About Us
-            </Link>
+            </NavLink>
 
-            <Link to="/locations" className="text-lg tracking-wider uppercase text-primary-foreground hover:underline hover:underline-offset-2 hover:text-primary">
+            <NavLink to="/locations" className="text-lg tracking-wider uppercase text-primary-foreground hover:underline hover:underline-offset-2 hover:text-primary">
                 Locations
-            </Link>
+            </NavLink>
         </div>
     );
 }

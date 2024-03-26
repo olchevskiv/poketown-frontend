@@ -16,8 +16,8 @@ const Hero = () => {
             <div className="text-2xl text-wrap mb-5 tracking-wide"> 
                 Enjoy healthy and delicious Hawaiian inspired poké bowls, made your way or choose from our hand-crafted menu!
             </div>
-            <div className="flex flex-row space-x-4 "> 
-                <Button onClick={() => navigate('/locations')} size="lg" variant="secondary" className="text-xl font-normal">SEE LOCATIONS</Button>
+            <div className="flex  flex-col md:flex-row md:space-x-4 md:space-y-0 space-y-3"> 
+                <Button onClick={() => navigate('/menu')} size="lg" variant="secondary" className="text-xl font-normal">View Menu</Button>
 
                 {isAuthenticated ? (
                     <Button onClick={() => navigate('/menu')} size="lg" variant="default" className="text-xl font-normal">ORDER NOW!</Button>

@@ -1,4 +1,4 @@
-import MenuCard from "@/components/MenuCard";
+import MenuCard from "@/components/MenuItemCard";
 import customBanner from "../assets/poke-custom-banner.jpg";
 import { Button } from "@/components/ui/button";
 import { useGetMenuItems } from "@/api/MenuItemsAPI";

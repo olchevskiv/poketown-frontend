@@ -4,11 +4,12 @@ import { Minus, Plus } from "lucide-react";
 
 type Props = {
     ingredient: Ingredient;
+    customizable?: boolean;
     addToCustomOrder?: () => void;
     removeFromCustomOrder?: () => void;
 }
 
-const IngredientCard = ({ingredient, addToCustomOrder=()=>{}, removeFromCustomOrder}: Props) => {
+const IngredientCard = ({ingredient, customizable=true, addToCustomOrder=()=>{}, removeFromCustomOrder}: Props) => {
     return (
         <div className="flex flex-col cursor-pointer py-5 rounded-xl hover:border hover:border-primary-foreground bg-muted hover:bg-background" aria-label={ingredient.name}>
             <div className="flex flex-col justify-center items-center  h-[140px] w-[130px] ">   
@@ -19,8 +20,8 @@ const IngredientCard = ({ingredient, addToCustomOrder=()=>{}, removeFromCustomOr
                 </div>
             </div>
                
-            <div className="flex flex-row justify-center items-center -mt-4 pt-3">
-                {ingredient.quantity > 0 ? (
+            <div className="flex flex-col justify-center items-center -mt-4 pt-3">
+                { ingredient.quantity > 0 ? (
                     <div className="flex flex-row justify-center items-center gap-7">
                         <Button onClick={removeFromCustomOrder} variant="secondary" size="sm"  className="px-1 rounded-full hover:border-primary-foreground">
                             <Minus className="text-primary-foreground hover:text-primary-foreground" />
@@ -29,12 +30,13 @@ const IngredientCard = ({ingredient, addToCustomOrder=()=>{}, removeFromCustomOr
                         {ingredient.quantity}
                     </Button>
                    </div>
-                ) : (
+                ) : (<></>)}
+                { (!ingredient.quantity || ingredient.quantity <= 0 ) && customizable ? (
                     <Button onClick={addToCustomOrder} variant="default" size="sm" className="px-1 rounded-full text-white hover:border-primary-foreground text-md font-bold">
                         <Plus className="text-white hover:text-primary-foreground" />
                     </Button>
-                )}
-            
+                    ) : (<></>)
+                }
         </div>
                
         </div>
