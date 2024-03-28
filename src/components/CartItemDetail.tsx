@@ -23,7 +23,7 @@ const CartItemDetail = ({cartItem,removeFromCart}: Props) => {
         <div className="flex flex-row space-x-2 justify-between mb-3 w-full">
             <div className="flex flex-col">
                 <span className="font-bold">{cartItem.name}</span>
-                { cartItem.ingredients.length > 0 ? (
+                { cartItem.ingredients && cartItem.ingredients.length > 0 ? (
                     <span className="text-sm">
                         Ingredients: {
                             cartItem.ingredients.reduce(

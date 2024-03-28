@@ -1,6 +1,11 @@
-const Footer = () => {
+
+
+type Props = {
+    hideMobileFooter?: boolean;
+}
+const Footer = ({hideMobileFooter=false}: Props) => {
     return (
-        <div className="bg-primary py-10 mt-auto">
+        <div className={`bg-primary py-10 mt-auto ${hideMobileFooter ? 'hidden md:block' : ''}`}>
             <div className="container mx-auto flex  flex-col md:flex-row justify-evenly py-10">
                 <div className="flex flex-col md:flex-row md:gap-x-[150px] text-white w-3/4">
                     <div className="md:mb-0 mb-5">

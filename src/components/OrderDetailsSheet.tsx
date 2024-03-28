@@ -3,10 +3,11 @@ import { Sheet, SheetContent, SheetTitle } from "./ui/sheet";
 import { CartItem } from "@/types";
 import CartItemDetail from "./CartItemDetail";
 import { Button } from "./ui/button";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useOrderDetailsSheetContext } from "@/contexts/OrderDetailsSheetContext";
 import { useCartItemsContext } from "@/contexts/CartItemsContext";
+import { useRestaurantContext } from "@/contexts/RestaurantContext";
 
 type Props = {
     open:boolean;
@@ -14,11 +15,12 @@ type Props = {
 }
 
 const OrderDetailsSheet = ({open,onOpenChange}: Props) => {
-    const {cartItems, setCartItems} = useCartItemsContext();
+    const { cartItems, setCartItems } = useCartItemsContext();
     const navigate = useNavigate(); 
-    const {loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+    const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
     const { pathname } = useLocation();
-    const {setOpen} = useOrderDetailsSheetContext();
+    const { setOpen } = useOrderDetailsSheetContext();
+    const { restaurant } = useRestaurantContext();
     
     const onLogin = async () => {
         await loginWithRedirect({
@@ -37,13 +39,10 @@ const OrderDetailsSheet = ({open,onOpenChange}: Props) => {
         return <div></div>;
     }
 
-    const tax = 0.05;
     const subTotal = cartItems.reduce(
         (total, cartItem) => total + cartItem.price * cartItem.quantity,
         0
     );
-    const taxTotal = (subTotal * tax).toFixed(2);
-    const totalCost = (subTotal + +taxTotal).toFixed(2);
 
     const removeFromCart = (currentCartItem: CartItem) => {
         setCartItems((prevCartItems) => {
@@ -77,40 +76,67 @@ const OrderDetailsSheet = ({open,onOpenChange}: Props) => {
                     My Order
                 </SheetTitle>
                 <Separator className="border border-gray-200 mb-10" />
+                {
+                    restaurant && restaurant.address ? (
+                        <div className="flex flex-row flex-wrap justify-between items-center">
+                            <div className="text-md self-start font-bold">Pick Up From</div>
+                            <div className="flex flex-col self-start text-wrap text-sm">
+                                <div>{restaurant.address}</div>
+                                <div>{restaurant.city}, {restaurant.state} {restaurant.zipCode}</div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="flex flex-row justify-between items-center">
+                            <div className="text-md font-bold">Pick Up From</div>
+                            <Button onClick={() => {navigate('/locations');setOpen(false);}} variant="secondary">See Locations</Button>
+                        </div>
+                    )
+                }
+                <Separator className="border border-gray-200 mb-10" />
                 <div className="flex flex-col">
                     <div className="flex flex-col h-[450px] md:h-[640px] lg:[700px] overflow-y-scroll pr-2">
-                        {cartItems.map((cartItem: CartItem) => (
-                            <div key={cartItem._id}>
-                                <CartItemDetail cartItem={cartItem} removeFromCart={removeFromCart} />
-                            </div>
-                        ))}
+                        {
+                            cartItems && cartItems.length > 0 ? (
+                                cartItems.map((cartItem: CartItem) => (
+                                    <div key={cartItem._id}>
+                                        <CartItemDetail cartItem={cartItem} removeFromCart={removeFromCart} />
+                                    </div>
+                                ))
+                            ) : (
+                                <span>You have no items in your order!</span>
+                            )
+                        }
                     </div>
                        
-                    <Separator className="border border-gray-200 mb-3" />
-                    <div className="flex flex-row justify-between mb-2">
-                        <div>Subtotal</div>
-                        <div>${subTotal.toFixed(2)}</div>
-                    </div>
-                    <div className="flex flex-row justify-between mb-2">
-                        <div>Tax</div>
-                        <div>${taxTotal}</div>
-                    </div>
-                    <div>
+                    <div className="absolute bottom-0 right-0 left-0 p-5 bg-background">
+                        <Separator className="border border-gray-200 mb-3" />
+                        <div className="flex flex-row justify-between mb-2">
+                            <div>Subtotal</div>
+                            <div>${subTotal.toFixed(2)}</div>
+                        </div>
+                        <div className="flex flex-row justify-between mb-2">
+                            <div>Tax</div>
+                            <div>Calculated at checkout</div>
+                        </div>
+                        <div>
 
-                    </div>
-                    <div className="flex flex-row justify-between mb-5 font-bold text-lg">
-                        <div className="uppercase">Total</div>
-                        <div>${totalCost}</div>
-                    </div>
-
-                    {
-                        isAuthenticated ? (
-                            <Button onClick={onCheckout } variant="default" className="w-full">Checkout</Button>
-                        ) : (
-                            <Button onClick={ onLogin } variant="default" className="w-full">Login to Checkout</Button>
-                        )
-                    }
-                  
+                        </div>
+                        <div className="flex flex-row justify-between mb-3 font-bold text-lg">
+                            <div className="uppercase">Total</div>
+                            <div>${subTotal.toFixed(2)} + tax</div>
+                        </div>
+                        {
+                            isAuthenticated ? (
+                                (cartItems && cartItems.length > 0) ? (
+                                    <Button onClick={onCheckout } variant="default" className="w-full">Checkout</Button>
+                                ): (
+                                    <Button onClick={ () => {navigate('/menu');setOpen(false);} } variant="secondary" className="w-full">View Menu</Button>
+                                )
+                            ) : (
+                                <Button onClick={ onLogin } variant="default" className="w-full">Login to Checkout</Button>
+                            )
+                        }
+                  </div>
                 </div>
             </SheetContent>
         </Sheet>

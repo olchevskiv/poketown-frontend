@@ -1,21 +1,21 @@
-import MenuCard from "@/components/MenuItemCard";
-import customBanner from "../assets/poke-custom-banner.jpg";
+import MenuItemCard from "@/components/MenuItemCard";
+import customBanner from "@/assets/poke-custom-banner.jpg";
 import { Button } from "@/components/ui/button";
 import { useGetMenuItems } from "@/api/MenuItemsAPI";
 import { MenuItem } from "@/types";
-import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Loader from "@/components/Loader";
 
 const MenuPage = () => {
   const { menuItems, isLoading } = useGetMenuItems();
   const navigate = useNavigate(); 
   
   if (isLoading) {
-    return <Loader2 className="mr-2 h-6 w-6 animate-spin h-[800px]"/>;
+    return <Loader />;
   }
 
   if (!menuItems || menuItems.length <= 0 || !Array.isArray(menuItems)) {
-    return <Loader2 className="mr-2 h-6 w-6 animate-spin h-[800px]"/>;
+    return <Loader />;
   }
 
   const menuItemsByCategory = new Map();
@@ -41,7 +41,7 @@ const MenuPage = () => {
       <div className="flex flex-wrap -ml-3">
         {bowls.map((item: MenuItem) => (
           <div className="w-full sm:w-1/2 lg:w-1/4 px-3 py-3" key={item._id}>
-            <MenuCard menuItem={item} />
+            <MenuItemCard menuItem={item} />
           </div>
             
         ))}
@@ -63,7 +63,7 @@ const MenuPage = () => {
       <div className="flex flex-wrap -ml-3">
         {sides.map((item: MenuItem) => (
           <div className="w-full sm:w-1/2 lg:w-1/4 px-3 py-3" key={item._id}>
-            <MenuCard menuItem={item}/>
+            <MenuItemCard menuItem={item}/>
           </div>
             
         ))}
@@ -75,7 +75,7 @@ const MenuPage = () => {
       <div className="flex flex-wrap -ml-3">
         {beverages.map((item: MenuItem) => (
           <div className="w-full sm:w-1/2 lg:w-1/4 px-3 py-3" key={item._id}>
-            <MenuCard menuItem={item} />
+            <MenuItemCard menuItem={item} />
           </div>
             
         ))}

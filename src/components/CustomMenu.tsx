@@ -1,4 +1,4 @@
-import { Pencil } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import IngredientCard from "./IngredientCard";
 import IngredientMenu from "./IngredientMenu";
 import { Button } from "./ui/button";
@@ -8,16 +8,20 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useOrderDetailsSheetContext } from "@/contexts/OrderDetailsSheetContext";
 import { useCartItemsContext } from "@/contexts/CartItemsContext";
+import { Link, useNavigate } from "react-router-dom";
+import QuantityInput from "./QuantityInput";
 
 type Props = {
     title: string;
+    menuItemID?: string;
     prefilledIngredients?: Ingredient[];
 }
 
-const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
-    const [price, setPrice] = useState(9.50);
-    const [calories, setCalories] = useState(0);
-    const [ingredientCounts, setIngredientCounts] = useState({
+const CustomMenu = ({title,menuItemID='',prefilledIngredients=[]}: Props) => {
+    const [ price, setPrice ] = useState(9.50);
+    const [ calories, setCalories ] = useState(0);
+    const [ quantity, setQuantity ] = useState(1);
+    const [ ingredientCounts, setIngredientCounts ] = useState({
         BASE: 0,
         MIXIN: 0,
         PROTEIN: 0,
@@ -32,10 +36,10 @@ const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
         SAUCE: 3
     };
 
-    const {setOpen} = useOrderDetailsSheetContext();
-    const {setCartItems} = useCartItemsContext();
-
-    const [customOrderIngredients, setCustomOrderIngredients] = useState<Ingredient[]>(() => {
+    const { setOpen } = useOrderDetailsSheetContext();
+    const { setCartItems } = useCartItemsContext();
+    const navigate = useNavigate();
+    const [ customOrderIngredients, setCustomOrderIngredients ] = useState<Ingredient[]>(() => {
         let currentIngredients: Ingredient[] = [];
         if (prefilledIngredients && prefilledIngredients.length > 0) {
             prefilledIngredients.map((prefilledIngredient) => {
@@ -74,8 +78,8 @@ const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
         }, 0);
 
         if (add) {
-            if (currentCount >= INGREDIENT_MAXES[category]) {
-                alert('You have selected the max amount of ' + category.toLowerCase() + 's (' + INGREDIENT_MAXES[category] + ')');
+            if (currentCount > INGREDIENT_MAXES[category] - 1) {
+                toast('You have selected the max amount of ' + category.toLowerCase() + 's (' + INGREDIENT_MAXES[category] + ')');
                 return false;
             } else {
                 setIngredientCounts((ingredientCounts)=>{
@@ -99,6 +103,7 @@ const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
       
     }
 
+    // adds ingredient to current "custom" menu item
     const addToCustomOrder = (ingredient: Ingredient) => {
     setCustomOrderIngredients((prevCustomOrderIngredients) => {
         const existingIngredient = prevCustomOrderIngredients.find(
@@ -108,26 +113,26 @@ const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
         let updatedCustomOrderIngredients : Ingredient[];
 
         if (existingIngredient) {
-        if (checkIngredientCounts(existingIngredient.category as keyof typeof ingredientCounts, true)) {
-            updatedCustomOrderIngredients = prevCustomOrderIngredients.map((customIngredient) =>
-            customIngredient._id === ingredient._id
-                ? { ...customIngredient, quantity: customIngredient.quantity + 1 }
-                : customIngredient
-            );
-            if (existingIngredient.price > 0) {
-                setPrice((price) => {
-                    return price + existingIngredient.price;
-                });
+            if (checkIngredientCounts(existingIngredient.category as keyof typeof ingredientCounts, true)) {
+                updatedCustomOrderIngredients = prevCustomOrderIngredients.map((customIngredient) =>
+                customIngredient._id === ingredient._id
+                    ? { ...customIngredient, quantity: customIngredient.quantity + 1 }
+                    : customIngredient
+                );
+                if (existingIngredient.price > 0) {
+                    setPrice((price) => {
+                        return price + existingIngredient.price;
+                    });
+                }
+                if (existingIngredient.calories > 0) {
+                    setCalories((calories) => {
+                        return calories + existingIngredient.calories;
+                    });
+                }
+            } else {
+                updatedCustomOrderIngredients = prevCustomOrderIngredients;
             }
-            if (existingIngredient.calories > 0) {
-                setCalories((calories) => {
-                    return calories + existingIngredient.calories;
-                });
-            }
-        } else {
-            updatedCustomOrderIngredients = prevCustomOrderIngredients;
-        }
-        
+            
         } else {
         updatedCustomOrderIngredients = [
             ...prevCustomOrderIngredients,
@@ -163,7 +168,8 @@ const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
         return updatedCustomOrderIngredients;
     });
     };
-    
+
+    // removes ingredient to current "custom" menu item
     const removeFromCustomOrder = (ingredient: Ingredient) => {
     setCustomOrderIngredients((prevCustomOrderIngredients) => {
 
@@ -203,6 +209,7 @@ const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
     });
     };
 
+    // adds current "custom" menu item to the cart/order
     const addToCart = () => {
         setCartItems((prevCartItems) => {
             let updatedCartItems : CartItem[];
@@ -217,9 +224,10 @@ const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
                 ...prevCartItems,
                 {
                     _id: (Math.random() + 1).toString(36),
+                    isCustom: true,
                     name: 'Custom Bowl',
                     price: price,
-                    quantity: 1,
+                    quantity: quantity,
                     image_url: '',
                     calories: calories,
                     ingredients: customOrderIngredients 
@@ -237,14 +245,22 @@ const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
         });
     };
 
+    const onCancel = () => {
+        if (menuItemID) {
+            navigate(`/menu/${menuItemID}`);
+        } else {
+            navigate('/menu');
+        }
+    }
+
     return (
         <div>
             <div className="flex flex-col md:flex-row w-full">
-                <div className="md:w-2/5 flex flex-col mr-10 justify-start pb-10">
-                    <div className="mb-6">
+                <div className="md:w-2/5 flex flex-col md:mr-10 justify-start pb-0 md:pb-10">
+                    <div className="mb-1 md:mb-6">
                         <div className="flex flex-row justify-between items-center justify-center">
                             <h3 className="text-2xl tracking-wide">{title}</h3>
-                            <div className="hover:text-primary"><Pencil /></div>
+                            <Link to="/menu" className="hover:text-primary"><ArrowLeft /></Link>
                         </div>
                         <div className="text-lg flex flex-row gap-2">
                             <span>${price}</span>
@@ -256,7 +272,8 @@ const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
                     <Separator className="bg-muted mb-3"/>
                     
                     {customOrderIngredients.length > 0 ? (
-                        <div id="ingredients" className="flex flex-row justify-start gap-4 flex-wrap max-h-[750px] overflow-y-scroll mb-6">
+
+                        <div id="ingredients" className="flex flex-row flex-auto md:flex-wrap justify-start gap-4 h-[170px] overflow-x-scroll overflow-y-hidden md:max-h-[650px] md:overflow-y-scroll md:overflow-x-hidden mb-6">
                             {customOrderIngredients.map((ing: Ingredient) => (
                                 <IngredientCard key={ing._id} ingredient={ing} addToCustomOrder={() => addToCustomOrder(ing)} removeFromCustomOrder={() => removeFromCustomOrder(ing)}/>
                             ))}
@@ -265,14 +282,39 @@ const CustomMenu = ({title, prefilledIngredients=[]}: Props) => {
                         <div className="text-lg tracking-wide pb-5">Add some ingredients to get started!</div>
                     )}
 
-                    <Separator className="bg-muted mb-3"/>
-                    <div className="flex flex-row space-x-4">
-                        <Button onClick={addToCart} variant="default" size="lg">Add To Order</Button>
+                    
+
+                    <div className="hidden md:block">
+                        <Separator className="bg-muted mb-3"/>
+                        <div className="flex flex-row justify-between w-full mb-4">
+                            <div>Quantity</div>
+                            <QuantityInput quantity={quantity} setQuantity={setQuantity}/>
+                        </div>
+                        <Separator className="bg-muted mb-3"/>
+                        <div className="flex flex-row space-x-4">
+                            <Button onClick={onCancel} variant="secondary" size="lg">Cancel</Button>
+                            <Button onClick={addToCart} variant="default" size="lg">Add To Order</Button>
+                        </div>
                     </div>
+                    
                 </div>
 
                 <div className="md:w-3/5 flex  items-start">
                     <IngredientMenu inCustomOrderIngredients={customOrderIngredients} addToCustomOrder={addToCustomOrder} removeFromCustomOrder={removeFromCustomOrder} />
+                </div>
+
+                <div className="md:hidden">
+                    <div className="fixed bottom-0 bg-background p-4 left-0 right-0 ">
+                        <div className="flex flex-row justify-between w-full mb-4">
+                            <div>Quantity</div>
+                            <QuantityInput quantity={quantity} setQuantity={setQuantity}/>
+                        </div>
+                        <Separator className="bg-muted mb-3"/>
+                        <div className="flex justify-center items-center w-full space-x-5">
+                            <Button onClick={onCancel} variant="secondary" size="lg">Cancel</Button>
+                            <Button onClick={addToCart}  variant="default" size="lg">Add To Order</Button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

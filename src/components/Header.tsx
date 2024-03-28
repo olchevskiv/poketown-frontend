@@ -7,7 +7,7 @@ const Header = () => {
 
     return (
     <div className="py-6">
-        <div className="container mx-auto flex justify-between  items-center">
+        <div className="px-3 md:px-8 container mx-auto flex justify-between items-center">
             <div className="hidden lg:block">
                 <MainNav />
             </div>

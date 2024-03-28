@@ -3,10 +3,11 @@ import Header from "@/components/Header";
 
 type Props = {
   fullPage?: boolean;
+  hideMobileFooter?: boolean;
   children: React.ReactNode;
 }
 
-const Layout = ({children, fullPage=false}: Props) => {
+const Layout = ({children, fullPage=false, hideMobileFooter=false}: Props) => {
   return (
     <div>
         <div className="flex flex-col min-h-screen">
@@ -16,13 +17,13 @@ const Layout = ({children, fullPage=false}: Props) => {
                   fullPage ? (
                     <div>{children}</div>
                   ) : (
-                    <div className = "container py-10">{children}</div>
+                    <div className = "container py-1 px-3 md:px-10 md:py-10">{children}</div>
                   )
                 }
                
             </div>
         </div>
-        <Footer />
+          <Footer hideMobileFooter={hideMobileFooter} />
     </div>
   )
 };

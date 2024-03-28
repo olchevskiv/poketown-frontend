@@ -9,12 +9,12 @@ import { Toaster } from "@/components/ui/sonner"
 import ScrollToTop from './components/ScrollToTop';
 import { OrderDetailsSheetProvider } from './contexts/OrderDetailsSheetContext';
 import { CartItemsProvider } from './contexts/CartItemsContext';
+import { RestaurantProvider } from './contexts/RestaurantContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-
     }
   }
 });
@@ -26,10 +26,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <QueryClientProvider client={queryClient}>
       <Auth0ProviderWithNavigate>
         <CartItemsProvider >
+          <RestaurantProvider>
           <OrderDetailsSheetProvider >
             <AppRoutes />
             <Toaster visibleToasts={1} position="top-right" richColors/>
           </OrderDetailsSheetProvider>
+          </RestaurantProvider>
         </CartItemsProvider>
       </Auth0ProviderWithNavigate>
       </QueryClientProvider>

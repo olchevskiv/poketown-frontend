@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import UserMenu from "./UserMenu";
 import { useLocation } from "react-router-dom";
 import ShoppingBagIcon from "./ShoppingBagIcon";
+import RestaurantIcon from "./RestaurantIcon";
 
 const UserNav = () => {
     const {loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
@@ -21,8 +22,9 @@ const UserNav = () => {
     }
 
     return (
-        <div className="flex flex-col flex-end items-end w-[286px]">
+        <div className="flex flex-col flex-end items-end w-[350px]">
             <div  className="flex flex-row items-center space-x-2">
+                <RestaurantIcon />
                 <ShoppingBagIcon />
                 {isAuthenticated ? (
                     <UserMenu/>

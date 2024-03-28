@@ -1,12 +1,17 @@
 import { useGetMenuItem } from "@/api/MenuItemsAPI";
 import IngredientCard from "@/components/IngredientCard";
+import Loader from "@/components/Loader";
+import QuantityInput from "@/components/QuantityInput";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { useCartItemsContext } from "@/contexts/CartItemsContext";
 import { useOrderDetailsSheetContext } from "@/contexts/OrderDetailsSheetContext";
 import { CartItem, Ingredient, MenuItem } from "@/types";
-import { Loader2 } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const MenuItemDetailPage = () => {
     const { menuItemID } = useParams();
@@ -14,19 +19,20 @@ const MenuItemDetailPage = () => {
     const { menuItem, isLoading } = useGetMenuItem(menuItemID);
     const {setOpen} = useOrderDetailsSheetContext();
     const {setCartItems} = useCartItemsContext();
+    const [ quantity, setQuantity ] = useState(1);
 
     if (isLoading || !menuItem) {
-        return <Loader2 className="mr-2 h-6 w-6 animate-spin h-[800px]"/>;
+        return <Loader />;
     }
     let ingredients: Ingredient[] = [];
 
     const hasIngredients = menuItem.category == 'BOWL';
-    let calories = 0;
+    let calories = menuItem.baseCalories;
 
     if (hasIngredients){
         ingredients = menuItem.ingredients;
         if (!ingredients || ingredients.length <= 0) {
-            return <Loader2 className="mr-2 h-6 w-6 animate-spin h-[800px]"/>;
+            return <Loader />;
         }
 
         // Calculate calorie value of the bowl from its ingredients property
@@ -54,10 +60,11 @@ const MenuItemDetailPage = () => {
                 ...prevCartItems,
                 {
                     _id: currentMenuItem._id,
+                    isCustom: false,
                     name: currentMenuItem.name,
                     price: currentMenuItem.price,
                     image_url: currentMenuItem.image_url,
-                    quantity: 1,
+                    quantity: quantity,
                     calories: 0,
                     ingredients: currentMenuItem.ingredients 
                 },
@@ -81,6 +88,7 @@ const MenuItemDetailPage = () => {
                 <div className="mb-6">
                     <div className="flex flex-row justify-between items-center justify-center">
                         <h3 className="text-2xl tracking-wide">{menuItem.name}</h3>
+                        <Link to="/menu" className="hover:text-primary"><ArrowLeft /></Link>
                     </div>
                     <div className="text-lg">
                         ${menuItem.price} - {calories} CAL
@@ -97,20 +105,43 @@ const MenuItemDetailPage = () => {
                 ) : (
                     <div className="text-lg tracking-wide pb-5">{menuItem.description}</div>
                 )}
-                <Separator className="bg-muted mb-3"/>
-                <div className="flex flex-row space-x-4">
-                    {hasIngredients ? (
-                        <Button onClick={() => navigate(`/menu/${menuItem._id}/custom`)} variant="secondary" size="lg">Customize</Button>
-                    ) : (<></>)}
-                    {
+               
+
+                <div className="hidden md:block">
+                    <Separator className="bg-muted mb-3"/>
+                    <div className="flex flex-row justify-between w-full mb-4">
+                        <div className="text-md font-normal">Quantity</div>
+                        <QuantityInput quantity={quantity} setQuantity={setQuantity}/>
+                    </div>
+
+                    <Separator className="bg-muted mb-3"/>
+                    <div className="flex flex-row space-x-4">
+                        {hasIngredients ? (
+                            <Button onClick={() => navigate(`/menu/${menuItem._id}/custom`)} variant="secondary" size="lg">Customize</Button>
+                        ) : (<></>)}
                         <Button variant="default" size="lg" onClick={() => addToCart(menuItem)}>Add To Order</Button>
-                    }
-                
+                    
+                    </div>
                 </div>
             </div>
 
             <div className="w-full hidden lg:flex lg:w-3/5 flex justify-end items-center">
                 <img className="p-10  w-9/12" src={menuItem.image_url}></img>
+            </div>
+            <div className="md:hidden">
+                <div className="fixed bottom-0 bg-background p-4 left-0 right-0 ">
+                    <div className="flex flex-row justify-between w-full mb-4">
+                        <div>Quantity</div>
+                        <QuantityInput quantity={quantity} setQuantity={setQuantity}/>
+                    </div>
+                    <Separator className="bg-muted mb-3"/>
+                    <div className="flex justify-center items-center w-full space-x-5">
+                        {hasIngredients ? (
+                            <Button onClick={() => navigate(`/menu/${menuItem._id}/custom`)} variant="secondary" size="lg">Customize</Button>
+                        ) : (<></>)}
+                        <Button variant="default" size="lg" onClick={() => addToCart(menuItem)}>Add To Order</Button>
+                    </div>
+                </div>
             </div>
         </div>
     );

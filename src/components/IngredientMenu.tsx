@@ -3,6 +3,7 @@ import { Loader2 } from "lucide-react";
 import IngredientCard from "./IngredientCard";
 import { Ingredient } from "@/types";
 import { Separator } from "./ui/separator";
+import Loader from "./Loader";
 
 type Props = {
     inCustomOrderIngredients?: Ingredient[]
@@ -13,11 +14,11 @@ type Props = {
 const IngredientMenu = ({addToCustomOrder,removeFromCustomOrder, inCustomOrderIngredients=[]}: Props) => {
     const { ingredients, isLoading } = useGetIngredients();
     if (isLoading) {
-        return <Loader2 className="mr-2 h-6 w-6 animate-spin h-[800px]"/>;
+        return <Loader />;
     }
 
     if (!ingredients || ingredients.length <= 0 || !Array.isArray(ingredients)) {
-        return <Loader2 className="mr-2 h-6 w-6 animate-spin h-[800px]"/>;
+        return <Loader />;
     }
 
     const ingredientsMap = new Map();

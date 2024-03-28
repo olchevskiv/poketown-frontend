@@ -38,15 +38,17 @@ export type MenuItem = {
     name: string,
     description: string,
     price: number,
+    baseCalories:number,
     category: string,
     image_url: string,
     ingredients: Ingredient[]
 };
 
 export type CartItem = {
-    _id: string,
+    _id?: string,
     name: string,
     price: number,
+    isCustom: boolean,
     quantity: number,
     calories: number,
     image_url: string,
@@ -57,7 +59,8 @@ export type OrderStatus =
   | "placed"
   | "paid"
   | "inProgress"
-  | "readyForPickup";
+  | "readyForPickup"
+  | "pickedUp";
 
 export type Order = {
     _id: string;

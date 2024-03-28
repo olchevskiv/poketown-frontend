@@ -9,12 +9,13 @@ import {
 import MenuCard from "./MenuItemCard";
 import { useGetMenuItems } from "@/api/MenuItemsAPI";
 import { MenuItem } from "@/types";
+import Loader from "./Loader";
 
 const MenuCarousel = () => {
   const { menuItems, isLoading } = useGetMenuItems();
 
   if (isLoading) {
-    return "Loading...";
+    <Loader />
   }
 
   if (!menuItems || menuItems.length <= 0) {
