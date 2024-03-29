@@ -1,5 +1,4 @@
 import { useGetIngredients } from "@/api/IngredientsAPI";
-import { Loader2 } from "lucide-react";
 import IngredientCard from "./IngredientCard";
 import { Ingredient } from "@/types";
 import { Separator } from "./ui/separator";

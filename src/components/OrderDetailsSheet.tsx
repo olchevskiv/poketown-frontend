@@ -3,7 +3,7 @@ import { Sheet, SheetContent, SheetTitle } from "./ui/sheet";
 import { CartItem } from "@/types";
 import CartItemDetail from "./CartItemDetail";
 import { Button } from "./ui/button";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useOrderDetailsSheetContext } from "@/contexts/OrderDetailsSheetContext";
 import { useCartItemsContext } from "@/contexts/CartItemsContext";
