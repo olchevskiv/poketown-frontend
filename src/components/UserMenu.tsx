@@ -14,7 +14,7 @@ const UserMenu = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuItem><Link to="/profile" className="hover:text-primary">Profile</Link></DropdownMenuItem>
-                <DropdownMenuItem><Link to="/orders" className="hover:text-primary">Order History</Link></DropdownMenuItem>
+                <DropdownMenuItem><Link to="/orders" className="hover:text-primary">My Orders</Link></DropdownMenuItem>
                 <Separator className="bg-muted"/>
                 <DropdownMenuItem><Button variant="default" className="flex flex-1" onClick={()=> logout()}>Logout</Button></DropdownMenuItem>
             </DropdownMenuContent>

@@ -50,7 +50,8 @@ const MenuPage = () => {
 
     <div className="mb-6">
       <h3 className="text-primary-foreground text-3xl tracking-wide mb-2" id="custom" >Custom</h3>
-      <div className="h-[450px] w-full items-center rounded-xl bg-muted px-10 justify-center content-start flex flex-col items-start space-y-4 md:mb-3"  style={{backgroundImage: `url(${customBanner})`, backgroundPosition: 'right',
+      <div className="h-[450px] brightness-105 w-full items-center rounded-xl bg-muted px-10 justify-center content-start flex flex-col items-start space-y-4 md:mb-3" 
+        style={{backgroundImage: `url(${customBanner})`, backgroundPosition: 'left',
         backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
             <h4 className="text-5xl text-primary-foreground self-start ml-10 tracking-wider">Make Your Own</h4>
             <span className="text-xl text-primary-foreground self-start ml-10 tracking-wide">Design your own custom Poke bowl just the way you want it!</span>

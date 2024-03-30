@@ -69,6 +69,8 @@ export type Order = {
     user: User;
     totalAmount: number;
     status: OrderStatus;
+    image_url: string;
+    pickUpTime: string;
     createdAt: string;
     restaurantId: string;
 }
@@ -87,3 +89,4 @@ export type RestaurantSearchResponse = {
       pages: number;
     };
   };
+  

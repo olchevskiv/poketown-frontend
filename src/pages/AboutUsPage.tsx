@@ -1,16 +1,3 @@
-
-/*
-  <div className="flex flex-col w-full">
-        <h2 className="text-2xl mb-2">Origin Story</h2>
-        <div className="text-lg mb-5">
-            Poketown is a fictional Poké bowl restaurant created out of my love for Poké bowls and web design! I spent about a week working and refining this website to be my version of my dream Poké restaurant web application. I order custom Poké bowls from my local restaurants almost every week and from ordering online, and one day when I was ordering my weekly Poké bowl, I realized I wanted to create my own improved version of the site. 
-        </div>
-        <h2 className="text-2xl mb-2">What is Poké</h2>
-            <div className="text-lg">
-            
-            </div>
-        </div>
-*/
 import { Link } from "react-router-dom";
 import image1 from "../assets/about-us-1.jpg";
 import image2 from "../assets/about-us-2.jpg";

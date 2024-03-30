@@ -3,7 +3,7 @@ import { Sheet, SheetContent, SheetTitle } from "./ui/sheet";
 import { CartItem } from "@/types";
 import CartItemDetail from "./CartItemDetail";
 import { Button } from "./ui/button";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useOrderDetailsSheetContext } from "@/contexts/OrderDetailsSheetContext";
 import { useCartItemsContext } from "@/contexts/CartItemsContext";
@@ -18,14 +18,13 @@ const OrderDetailsSheet = ({open,onOpenChange}: Props) => {
     const { cartItems, setCartItems } = useCartItemsContext();
     const navigate = useNavigate(); 
     const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
-    const { pathname } = useLocation();
     const { setOpen } = useOrderDetailsSheetContext();
     const { restaurant } = useRestaurantContext();
     
     const onLogin = async () => {
         await loginWithRedirect({
           appState: {
-            returnTo: pathname,
+            returnTo: 'checkout',
           },
         });
     };

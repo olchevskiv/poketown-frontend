@@ -39,7 +39,8 @@ export const useGetMenuItem = (menuItemID?: string) => {
     return response.json();
   };
 
-  const { data: menuItem, isLoading } = useQuery("fetchMenuItem",
+  const { data: menuItem, isLoading } = useQuery(
+    "fetchMenuItem",
     getMenuItemByIdRequest,
     {
       enabled: !!menuItemID,

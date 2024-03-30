@@ -6,7 +6,7 @@ import ShoppingBagIcon from "./ShoppingBagIcon";
 import RestaurantIcon from "./RestaurantIcon";
 
 const UserNav = () => {
-    const {loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+    const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
     const { pathname } = useLocation();
 
     const onLogin = async () => {

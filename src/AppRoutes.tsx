@@ -11,7 +11,8 @@ import MenuItemDetailPage from "./pages/menu/MenuItemDetailPage";
 import CreateYourOwnMenuItemPage from "./pages/menu/CreateYourOwnMenuItemPage";
 import CustomizeMenuItemPage from "./pages/menu/CustomizeMenuItemPage";
 import CheckoutPage from "./pages/CheckoutPage";
-import OrderPage from "./pages/order/OrderPage";
+import UserOrdersPage from "./pages/order/UserOrdersPage";
+import OrderDetailPage from "./pages/order/OrderDetailPage";
 
 const AppRoutes = () => {
     return(
@@ -30,8 +31,8 @@ const AppRoutes = () => {
                 <Route path="/profile" element={<Layout><UserProfilePage /></Layout>}></Route>
                 <Route path="/checkout" element={<Layout><CheckoutPage /></Layout>}></Route>
                
-                
-                <Route path="/order/status" element={<Layout><OrderPage /></Layout>}></Route>
+                <Route path="/orders" element={<Layout><UserOrdersPage /></Layout>}></Route>
+                <Route path="/order/:orderID" element={<Layout><OrderDetailPage /></Layout>}></Route>
 
             </Route>
 
