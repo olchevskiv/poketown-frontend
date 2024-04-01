@@ -4,19 +4,14 @@ import { Separator } from "@radix-ui/react-separator";
 import { Button } from "./ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
 import MobileNavLinks from "./MobileNavLinks";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ShoppingBagIcon from "./ShoppingBagIcon";
 
 const MobileNav = () => {
     const { loginWithRedirect, isAuthenticated, user } = useAuth0();
-    const { pathname } = useLocation();
 
     const onLogin = async () => {
-        await loginWithRedirect({
-          appState: {
-            returnTo: pathname,
-          },
-        });
+        await loginWithRedirect({});
     };
 
     return(

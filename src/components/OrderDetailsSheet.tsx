@@ -22,11 +22,7 @@ const OrderDetailsSheet = ({open,onOpenChange}: Props) => {
     const { restaurant } = useRestaurantContext();
     
     const onLogin = async () => {
-        await loginWithRedirect({
-          appState: {
-            returnTo: 'checkout',
-          },
-        });
+        await loginWithRedirect();
     };
 
     const onCheckout = () => {
