@@ -1,5 +1,5 @@
 import { useCreateCheckoutSession } from "@/api/OrderAPI";
-import { Restaurant } from "@/types";
+import { CartItem, Restaurant } from "@/types";
 import { toast } from "sonner";
 import Loader from "./Loader";
 import { Button } from "./ui/button";
