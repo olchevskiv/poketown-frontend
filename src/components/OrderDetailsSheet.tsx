@@ -127,7 +127,12 @@ const OrderDetailsSheet = ({open,onOpenChange}: Props) => {
                         {
                             isAuthenticated ? (
                                 (cartItems && cartItems.length > 0) ? (
-                                    <Button onClick={onCheckout } variant="default" className="w-full">Checkout</Button>
+                                    restaurant && restaurant.address ? (
+                                        <Button onClick={onCheckout } variant="default" className="w-full">Checkout</Button>
+                                    ) : (
+                                        <Button onClick={() => {navigate('/locations');setOpen(false);}} variant="secondary" className="w-full">Select a Restaurant</Button>
+                                    )
+                                   
                                 ): (
                                     <Button onClick={ () => {navigate('/menu');setOpen(false);} } variant="secondary" className="w-full">View Menu</Button>
                                 )

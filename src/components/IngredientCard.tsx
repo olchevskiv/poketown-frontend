@@ -20,17 +20,17 @@ const IngredientCard = ({ingredient, customizable=true, addToCustomOrder=()=>{},
                     </div>
                     { ingredient.quantity > 0 ? (
                         <div className="w-full absolute bottom-0 right-0 left-0 flex  flex-auto flex-row justify-between items-center px-1 py-2 -mt-4">
-                            <Button onClick={removeFromCustomOrder} variant="secondary" size="sm"  className="px-1 w-[28px] h-[28px] rounded-full hover:border-primary-foreground">
+                            <Button aria-label="Remove Ingredient from Menu Item" onClick={removeFromCustomOrder} variant="secondary" size="sm"  className="px-1 w-[28px] h-[28px] rounded-full hover:border-primary-foreground">
                                 <Minus className="text-primary-foreground hover:text-primary-foreground" />
                             </Button>
-                            <Button onClick={addToCustomOrder} variant="default" size="sm" className="w-[28px] h-[28px] hover:no-underline rounded-full text-white text-md font-bold">
+                            <Button aria-label="Add Ingredient To Menu Item" onClick={addToCustomOrder} variant="default" size="sm" className="w-[28px] h-[28px] hover:no-underline rounded-full text-white text-md font-bold">
                                 {ingredient.quantity}
                             </Button>
                         </div>
                     ) : (<></>)}
                     { (!ingredient.quantity || ingredient.quantity <= 0 ) && customizable ? (
                          <div className="w-full absolute bottom-0 right-0 left-0 flex  flex-auto flex-row justify-end items-center px-1 py-2 -mt-4">
-                            <Button onClick={addToCustomOrder} variant="default" size="sm" className="px-1 w-[28px] h-[28px] rounded-full text-white hover:border-primary-foreground text-md font-bold">
+                            <Button aria-label="Add Ingredient To Menu Item" onClick={addToCustomOrder} variant="default" size="sm" className="px-1 w-[28px] h-[28px] rounded-full text-white hover:border-primary-foreground text-md font-bold">
                                 <Plus className="text-white hover:text-primary-foreground" />
                             </Button>
                         </div>

@@ -28,9 +28,6 @@ const RestaurantCard = ({restaurant}: Props) => {
     return (
         <div className="flex flex-col md:flex-row py-5 justify-between items-center rounded-xl border border-primary-foreground bg-background pl-5 md:px-10" >
             <div className="flex flex-row space-x-5 justify-start items-center md:px-10">
-                <div className="w-2/12">
-                    <img className="w-full" src={restaurant.image_url}></img>
-                </div>
                 <div className="flex flex-col space-y-1">
                     <div className="text-3xl mb-2 uppercase tracking-wide font-normal"> {restaurant.city}, {restaurant.state}</div>
                     <div className="text-xl font-normal">{restaurant.address}</div>

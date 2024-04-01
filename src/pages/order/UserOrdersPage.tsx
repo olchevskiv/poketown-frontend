@@ -75,11 +75,11 @@ const UserOrdersPages = ({}: Props) => {
 
   return(
     <div className="flex flex-col justify-between">
-        <div className="flex flex-col md:flex-row md:h-[470px] pb-10 md:pb-1">
-            <div className="w-full md:w-3/4">
+        <div className="flex flex-col lg:flex-row lg:h-[470px] pb-10 lg:pb-1">
+            <div className="w-full lg:w-3/4">
                 <img src={image} className="rounded-xl"></img>
             </div>
-            <div className="w-full md:w-3/4 flex flex-col pb-1 pt-10 md:pt-1 px-1 md:px-10 space-y-3">
+            <div className="w-full lg:w-3/4 flex flex-col pb-1 pt-10 lg:pt-1 px-1 lg:px-10 space-y-3">
                 <h2 className="text-3xl">Welcome, {user?.name?.split(' ')[0]}</h2>
                 { cartItems && cartItems.length > 0 ? (
                     <Button onClick={() => navigate('/checkout')} variant="default" size="lg" className="rounded-xl normal-case p-10 text-xl flex flex-row justify-between text-white hover:text-primary">
@@ -123,18 +123,22 @@ const UserOrdersPages = ({}: Props) => {
                 </div>
             </div>
         </div>
-
+        <div className="flex flex-col gap-y-5 pb-2">
         {
             inProgressOrders?.map((order) => (
-                <OrderDetail order={order} />
+                <div key={order._id} className="">
+                     <OrderDetail order={order} />
+                </div>
+               
             ))
         }
+        </div>
 
         {
             orders && orders.length > 0 ? (
                 <div className="mt-8">
-                    <h3 className="text-2xl mb-3 tracking-wide md:-pl-3">My Past Orders</h3>
-                    <div className="flex flex-col md:flex-row pb-10">
+                    <h3 className="text-2xl mb-3 tracking-wide lg:-pl-3">My Past Orders</h3>
+                    <div className="flex flex-col lg:flex-row pb-10">
                         <OrderCarousel orders={orders}/>
                     </div>
                 </div>

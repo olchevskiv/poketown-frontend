@@ -2,13 +2,14 @@ import { useNavigate } from "react-router-dom";
 import hero from "../assets/poke-hero.png"
 import { Button } from "./ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
+import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 
 const Hero = () => {
     const navigate = useNavigate(); 
     const {loginWithRedirect, isAuthenticated } = useAuth0();
 
     return (
-    <div className="container flex flex-col md:flex-row justify-evenly md:pt-10 pt-0 pb-10">
+    <div className="container flex flex-col lg:flex-row justify-evenly lg:pt-10 pt-0 pb-10">
         <div className="flex flex-col pt-10">
             <div className="text-5xl font-bold mb-5 pt-10"> 
                 POKÉ YOUR WAY
@@ -16,7 +17,7 @@ const Hero = () => {
             <div className="text-2xl text-wrap mb-5 tracking-wide"> 
                 Enjoy healthy and delicious Hawaiian inspired poké bowls, made your way or choose from our hand-crafted menu!
             </div>
-            <div className="flex  flex-col md:flex-row md:space-x-4 md:space-y-0 space-y-3"> 
+            <div className="flex  flex-col lg:flex-row lg:space-x-4 lg:space-y-0 space-y-3"> 
                 <Button onClick={() => navigate('/menu')} size="lg" variant="secondary" className="text-xl font-normal">View Menu</Button>
 
                 {isAuthenticated ? (
@@ -27,8 +28,11 @@ const Hero = () => {
                 
             </div>
         </div>
-        <div className="w-full md:w-3/4 pt-10 md:pt-0 flex items-end">
-            <img src={hero} className="w-full max-h-[600px] object-cover"/>
+        <div className="w-full lg:w-3/4 pt-10 lg:pt-0 hidden lg:flex flex items-end">
+            <AspectRatio ratio={1041/1043}>
+            <img src={hero} className="w-full max-h-[600px]"/>
+            </AspectRatio>
+          
         </div>
 
     </div>

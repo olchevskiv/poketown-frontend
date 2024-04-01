@@ -1,12 +1,10 @@
-import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Separator } from "./ui/separator";
 import { CartItem, Restaurant } from "@/types";
 import CartItemDetail from "./CartItemDetail";
-import { toast } from "sonner";
 import { useCartItemsContext } from "@/contexts/CartItemsContext";
-import { useCreateCheckoutSession } from "@/api/OrderAPI";
-import Loader from "./Loader";
+
+import PaymentButton from "./PaymentButton";
 
 type Props = {
     pickUpTime: Date|undefined;
@@ -15,11 +13,7 @@ type Props = {
 
 const OrderDetailsCard = ({restaurant, pickUpTime}: Props) => {
     const { cartItems, setCartItems } = useCartItemsContext();
-    const { createCheckoutSession, isLoading } = useCreateCheckoutSession();
-    
-    if ( isLoading ) {
-        return <Loader />;
-    }
+
     const subTotal = cartItems.reduce(
         (total, cartItem) => total + cartItem.price * cartItem.quantity,
         0
@@ -49,31 +43,6 @@ const OrderDetailsCard = ({restaurant, pickUpTime}: Props) => {
             return updatedCartItems;
         });
     };
-
-    const onCheckout = async (restaurant:Restaurant,cartItems: CartItem[],pickUpTime: Date|undefined) => {
-        if (!cartItems) {
-            toast.error('You have not added any items to your order');
-            return;
-        }
-
-        if (!pickUpTime) {
-            toast.error('You have not added selected a pick up time!');
-            return;
-        }
-      
-        const checkoutData = {
-            pickUpTime: pickUpTime.toString(),
-            cartItems: cartItems,
-            restaurantId: restaurant._id
-        };
-    
-        const data = await createCheckoutSession(checkoutData);
-
-        if (data.url){
-            window.location.href = data.url; // redirect user to Stripe for checkout
-        }
-       
-    }
     
     return (
         <Card className="px-4 bg-background">
@@ -101,7 +70,7 @@ const OrderDetailsCard = ({restaurant, pickUpTime}: Props) => {
                     <div>Total</div>
                     <div>${subTotal.toFixed(2)} + tax</div>
                 </div>
-                <Button onClick={() => onCheckout(restaurant,cartItems, pickUpTime)} variant="default" className="w-full">Continue to payment</Button>
+                <PaymentButton restaurant={restaurant} cartItems={cartItems} pickUpTime={pickUpTime} />
             </CardContent>
         </Card>
     );

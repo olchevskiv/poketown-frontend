@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 import { Clock, MapPin, User } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { Link } from "react-router-dom";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import PickUpTimesSelect from "./PickUpTimesSelect";
 
 type Props = {
   restaurant: Restaurant;
@@ -20,7 +20,6 @@ const PickupDetailsCard = ({restaurant, setPickUpTime}: Props) => {
 
     if (isLoading) {
         return <Loader />
-
     }
 
     const getNearestQuarterTime = () => {
@@ -90,9 +89,6 @@ const PickupDetailsCard = ({restaurant, setPickUpTime}: Props) => {
     }
 
     const pickUpTimes = generatePickupTimes();
-    /*if (pickUpTimes.length > 0) {
-        setPickUpTime(pickUpTimes[0].toDate());
-    }*/
 
     return (
         <Card className="md:px-4 bg-background">
@@ -127,23 +123,7 @@ const PickupDetailsCard = ({restaurant, setPickUpTime}: Props) => {
                     </div>
                     <div className="flex flex-col justify-between mb-3 w-full">
                         <div className="textmd w-full">Pickup time</div> 
-                        <Select defaultValue={pickUpTimes[0].toDate().toString()} onValueChange={(value) => setPickUpTime(new Date(value))}>
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select a pick up time" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {
-                                    pickUpTimes.map((time, index) => (
-                                        index !== 0 ? (
-                                            <SelectItem value={time.toDate().toString()}>{time.calendar()}</SelectItem>
-                                        ) : (
-                                            <SelectItem value={time.toDate().toString()}>{'ASAP - '+time.calendar()}</SelectItem>
-                                        )
-                                    
-                                    ))
-                                } 
-                            </SelectContent>
-                        </Select>  
+                        <PickUpTimesSelect pickUpTimes={pickUpTimes} setPickUpTime={setPickUpTime}/>
                               
                     </div>
                 </div>

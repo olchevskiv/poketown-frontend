@@ -26,15 +26,14 @@ const AppRoutes = () => {
             <Route path="/menu/:menuItemID/custom/" element={<Layout hideMobileFooter={true}><CustomizeMenuItemPage /></Layout>}></Route>
             <Route path="/about-us" element={<Layout fullPage={true}><AboutUsPage /></Layout>}></Route>
             <Route path="/locations" element={<Layout><LocationsPage /></Layout>}></Route>
+            <Route path="/order/:orderID" element={<Layout><OrderDetailPage /></Layout>}></Route>
 
             <Route element={<ProtectedRoute />}>
                 <Route path="/profile" element={<Layout><UserProfilePage /></Layout>}></Route>
                 <Route path="/checkout" element={<Layout><CheckoutPage /></Layout>}></Route>
-               
                 <Route path="/orders" element={<Layout><UserOrdersPage /></Layout>}></Route>
-                <Route path="/order/:orderID" element={<Layout><OrderDetailPage /></Layout>}></Route>
-
             </Route>
+
 
             <Route path="*" element={<Navigate to="/"/>}></Route>
         </Routes>

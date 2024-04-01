@@ -4,11 +4,21 @@ import { Separator } from "@radix-ui/react-separator";
 import { Button } from "./ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
 import MobileNavLinks from "./MobileNavLinks";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ShoppingBagIcon from "./ShoppingBagIcon";
 
 const MobileNav = () => {
-    const { isAuthenticated, user } = useAuth0();
+    const { loginWithRedirect, isAuthenticated, user } = useAuth0();
+    const { pathname } = useLocation();
+
+    const onLogin = async () => {
+        await loginWithRedirect({
+          appState: {
+            returnTo: pathname,
+          },
+        });
+    };
+
     return(
         <div  className="flex flex-row items-center space-x-6">
             <ShoppingBagIcon />
@@ -19,7 +29,7 @@ const MobileNav = () => {
                 <SheetContent className="space-y-3">
                     <SheetTitle>
                         {isAuthenticated ? (
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center font-normal tracking-wide gap-1">
                                 <CircleUserRound className="hover:text-primary mr-2" />
                                 {user?.name}
                             </div>
@@ -34,11 +44,11 @@ const MobileNav = () => {
                             <MobileNavLinks />
                         ) : (
                             <div className="w-full">
-                                <Link to="/menu" className="flex items-center text-primary-foreground font-bold hover:text-primary font-normal hover:underline trackingw-wide text-lg">Menu</Link>
-                                <Link to="/about-us" className="flex items-center text-primary-foreground font-bold hover:text-primary hover:underline font-normal trackingw-wide text-lg">About Us</Link>
-                                <Link to="/locations" className="flex items-center text-primary-foreground font-bold hover:text-primary hover:underline font-normal trackingw-wide text-lg">Locations</Link>
+                                <Link to="/menu" className="flex items-center text-primary-foreground font-bold hover:text-primary hover:underline font-normal tracking-wide text-xl mb-1">Menu</Link>
+                                <Link to="/about-us" className="flex items-center text-primary-foreground font-bold hover:text-primary hover:underline font-normal tracking-wide text-xl mb-1">About Us</Link>
+                                <Link to="/locations" className="flex items-center text-primary-foreground font-bold hover:text-primary hover:underline font-normal tracking-wide text-xl  mb-1">Locations</Link>
                                 <Separator className="border border-gray-200 mt-3 mb-2" />
-                                <Button variant="secondary" className="w-full">Log In</Button>
+                                <Button onClick={onLogin} variant="secondary" className="w-full text-xl mt-2">Log In</Button>
                             </div>
                         
                         )}
