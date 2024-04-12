@@ -6,6 +6,7 @@ import { ShoppingBag } from "lucide-react";
 import "react-step-progress-bar/styles.css";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import moment from "moment";
+import customBowlImage from "../assets/custom-bowl.png";
 
 type Props = {
   order: Order
@@ -60,10 +61,19 @@ const OrderDetail = ({order}: Props) => {
             </div>
           </div>
           <AspectRatio ratio={16 / 5}>
-            <img
-              src={order.cartItems[0].image_url}
-              className="rounded-md object-cover h-full w-full"
-            />
+            {
+              order.cartItems[0].image_url ? (
+                <img
+                src={order.cartItems[0].image_url}
+                className="rounded-md object-cover h-full w-full"
+              />
+              ) : (
+                <img
+                src={customBowlImage}
+                className="rounded-md object-cover h-full w-full"
+              />
+              )
+            }
           </AspectRatio>
         </div>
       </div>

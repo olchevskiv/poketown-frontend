@@ -46,6 +46,8 @@ export type MenuItem = {
 
 export type CartItem = {
     _id?: string,
+    cartItemId: string,
+    menuItemId?: string,
     name: string,
     price: number,
     isCustom: boolean,

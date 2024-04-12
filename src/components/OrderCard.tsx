@@ -1,6 +1,7 @@
 import { Order } from "@/types";
 import { useNavigate } from "react-router-dom";
 import moment from 'moment';
+import customBowlImage from "../assets/custom-bowl.png";
 
 type Props = {
     order: Order;
@@ -24,8 +25,14 @@ const OrderCard = ({order}: Props) => {
 
     return (
         <div  onClick={orderRoute} className="py-5 md:py-10 md:h-[400px] flex flex-col space-y-6 justify-start items-center rounded-xl hover:border hover:border-primary-foreground bg-muted hover:bg-background px-10" >
-
-            <img className="h-[220px]" src={order.cartItems[0].image_url}></img>
+            {
+                order.cartItems[0].image_url != '' ? (
+                    <img className="h-[220px]" src={order.cartItems[0].image_url}></img>
+                ) : (
+                    <img className="h-[220px]" src={customBowlImage}></img>
+                )
+            }
+            
             <div className="w-full" >
                 <div className="text-lg mb-2 tracking-wide">{cartItemsList}</div>
                 <div className="text-lg">{moment(order.createdAt).format("LL")}</div>

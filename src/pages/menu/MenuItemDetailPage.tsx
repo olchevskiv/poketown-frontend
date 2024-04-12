@@ -42,14 +42,14 @@ const MenuItemDetailPage = () => {
     const addToCart = (currentMenuItem: MenuItem) => {
         setCartItems((prevCartItems) => {
             const existingCartItem = prevCartItems.find(
-                (cartItem) => cartItem._id === currentMenuItem._id
+                (cartItem) => cartItem.menuItemId === currentMenuItem._id
             );
         
             let updatedCartItems : CartItem[];
         
             if (existingCartItem) {
                 updatedCartItems = prevCartItems.map((cartItem) =>
-                cartItem._id === currentMenuItem._id
+                cartItem.menuItemId === currentMenuItem._id
                     ? { ...cartItem, quantity: cartItem.quantity + 1 }
                     : cartItem
                 );
@@ -57,7 +57,8 @@ const MenuItemDetailPage = () => {
                 updatedCartItems = [
                 ...prevCartItems,
                 {
-                    _id: currentMenuItem._id,
+                    cartItemId: currentMenuItem._id,
+                    menuItemId: currentMenuItem._id,
                     isCustom: false,
                     name: currentMenuItem.name,
                     price: currentMenuItem.price,

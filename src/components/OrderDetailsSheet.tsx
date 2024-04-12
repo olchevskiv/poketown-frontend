@@ -45,13 +45,13 @@ const OrderDetailsSheet = ({open,onOpenChange}: Props) => {
 
             if (currentCartItem.quantity > 1) {
                 updatedCartItems = prevCartItems.map((cartItem) =>
-                cartItem._id === currentCartItem._id
+                cartItem.cartItemId === currentCartItem.cartItemId
                     ? { ...cartItem, quantity: cartItem.quantity - 1 }
                     : cartItem
                 );
             } else {
                 updatedCartItems = prevCartItems.filter(
-                    (cartItem) => currentCartItem._id !== cartItem._id
+                    (cartItem) => currentCartItem.cartItemId !== cartItem.cartItemId
                 );
             }
 
@@ -93,7 +93,7 @@ const OrderDetailsSheet = ({open,onOpenChange}: Props) => {
                         {
                             cartItems && cartItems.length > 0 ? (
                                 cartItems.map((cartItem: CartItem) => (
-                                    <div key={cartItem._id}>
+                                    <div key={cartItem.cartItemId}>
                                         <CartItemDetail cartItem={cartItem} removeFromCart={removeFromCart} />
                                     </div>
                                 ))

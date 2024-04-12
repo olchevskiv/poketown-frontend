@@ -193,7 +193,7 @@ const CustomMenu = ({title,menuItemID='',prefilledIngredients=[]}: Props) => {
             updatedCartItems = [
                 ...prevCartItems,
                 {
-                    _id: (Math.random() + 1).toString(36),
+                    cartItemId: (Math.random() + 1).toString(36),
                     isCustom: true,
                     name: 'Custom Bowl',
                     price: price,
