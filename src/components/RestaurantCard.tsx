@@ -33,7 +33,11 @@ const RestaurantCard = ({restaurant}: Props) => {
                     <div className="text-xl font-normal">{restaurant.address}</div>
                     <div className="text-xl font-normal">{restaurant.city}, {restaurant.state} {restaurant.zipCode}</div>
                     <div className="text-lg">
-                        {restaurant.daysOpen[0]} - {restaurant.daysOpen[restaurant.daysOpen.length - 1]} {restaurant.hourOpenStart}am -{restaurant.hourOpenEnd > 12 ? restaurant.hourOpenEnd - 12 : restaurant.hourOpenEnd}pm
+                        <span className="mr-2">{restaurant.daysOpen[0]} - {restaurant.daysOpen[restaurant.daysOpen.length - 1]}</span>
+                        <span>
+                            {restaurant.hourOpenStart}{restaurant.hourOpenStart >= 12 ? 'pm' : 'am'}-
+                            {restaurant.hourOpenEnd > 12 ? restaurant.hourOpenEnd - 12 : restaurant.hourOpenEnd}{restaurant.hourOpenEnd >= 12 ? 'pm' : 'am'}
+                        </span>
                     </div>
                 </div>
             </div>

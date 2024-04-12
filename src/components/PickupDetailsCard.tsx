@@ -51,7 +51,6 @@ const PickupDetailsCard = ({restaurant, setPickUpTime}: Props) => {
 
         var continueLoop = true;
 
-
         for (let i = 1; (i < quarterHours) && continueLoop; i++) {
             let prevTime = times[i - 1];
             let time = moment(prevTime).add(15, "minutes");
@@ -66,26 +65,35 @@ const PickupDetailsCard = ({restaurant, setPickUpTime}: Props) => {
     }
 
     const generatePickupTimes = () => {
+        
         let startDayOne = getNearestQuarterTime();
         let startDayTwo = moment().add(1,'days').startOf('day');
+        startDayTwo.set('hour', restaurant.hourOpenStart);
+        startDayTwo.set('minute',0);
+        startDayTwo.set('second',0);
         let times = [];
+        let dayOneTimes: string | any[] | ConcatArray<moment.Moment> = [];
+
         // get next day that restaurant is open
-        while ( !checkDayIsOpen(restaurant,startDayOne.format('dddd')) ) {
-            startDayOne.add(1,"days")
-            startDayOne.set('hour', restaurant.hourOpenStart);
-            startDayOne.set('minute',0);
-            startDayOne.set('second',0);
-        }
-        while ( !checkDayIsOpen(restaurant,startDayTwo.format('dddd')) ) {
+        while ( !checkDayIsOpen(restaurant,startDayTwo.format('dddd')) && startDayTwo > startDayOne ) {
             startDayTwo.add(1,"days");
             startDayTwo.set('hour', restaurant.hourOpenStart);
             startDayTwo.set('minute',0);
             startDayTwo.set('second',0);
         }
-        let dayOneTimes = getQuarterTimes(startDayOne);
+
+        if ( !checkDayIsOpen(restaurant,startDayOne.format('dddd')) && !checkTimeIsOpen(restaurant,startDayOne.hour()) ) {
+            dayOneTimes = getQuarterTimes(startDayOne);
+        }
+
         let dayTwoTimes = getQuarterTimes(startDayTwo);
-        times = dayOneTimes.concat(dayTwoTimes)
-        return  times;
+        if (dayOneTimes.length > 0) {
+            times = dayTwoTimes.concat(dayOneTimes);
+            return  times;
+        } else {
+            return dayTwoTimes;
+        }
+        
     }
 
     const pickUpTimes = generatePickupTimes();
@@ -106,7 +114,13 @@ const PickupDetailsCard = ({restaurant, setPickUpTime}: Props) => {
                                 <div className="flex flex-col self-start text-wrap text-md">
                                     <div>{restaurant.address}</div>
                                     <div>{restaurant.city}, {restaurant.state} {restaurant.zipCode}</div>
-                                    <div>{restaurant.daysOpen[0]} - {restaurant.daysOpen[restaurant.daysOpen.length - 1]} {restaurant.hourOpenStart}am -{restaurant.hourOpenEnd > 12 ? restaurant.hourOpenEnd - 12 : restaurant.hourOpenEnd}pm</div>
+                                    <div>
+                                        <span className="mr-1">{restaurant.daysOpen[0]} - {restaurant.daysOpen[restaurant.daysOpen.length - 1]} </span>
+                                        <span>
+                                            {restaurant.hourOpenStart}{restaurant.hourOpenStart >= 12 ? 'pm' : 'am'}-
+                                            {restaurant.hourOpenEnd > 12 ? restaurant.hourOpenEnd - 12 : restaurant.hourOpenEnd}{restaurant.hourOpenEnd >= 12 ? 'pm' : 'am'}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         ) : (
