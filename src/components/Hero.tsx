@@ -14,7 +14,7 @@ const Hero = () => {
             <div className="text-5xl font-bold mb-5 pt-10"> 
                 POKÉ YOUR WAY
             </div>
-            <div className="text-2xl text-wrap mb-5 tracking-wide"> 
+            <div className="text-2xl text-wrap mb-5 pe-3 tracking-wide"> 
                 Enjoy healthy and delicious Hawaiian inspired poké bowls, made your way or choose from our hand-crafted menu!
             </div>
             <div className="flex  flex-col lg:flex-row lg:space-x-4 lg:space-y-0 space-y-3"> 
